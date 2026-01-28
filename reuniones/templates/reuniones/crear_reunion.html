@@ -1,0 +1,163 @@
+{% extends 'reuniones/base.html' %}
+
+{% block title %}Crear Reunión - Zoom Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-4" style="color: #2D8CFF; font-weight: 700;">
+                <i class="fas fa-video-plus"></i> Nueva Reunión Zoom
+            </h1>
+            <p class="lead text-muted">Crea una reunión de Zoom en segundos</p>
+        </div>
+
+        <!-- Card Formulario -->
+        <div class="card-zoom">
+            <div class="card-body p-5">
+                <form method="post" id="formReunion">
+                    {% csrf_token %}
+                    
+                    <!-- Título de la Reunión -->
+                    <div class="mb-4">
+                        <label for="topic" class="form-label">
+                            <i class="fas fa-heading text-primary"></i> 
+                            <strong>Título de la Reunión</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="topic" 
+                               name="topic" 
+                               placeholder="Ej: Reunión de equipo - Proyecto Web"
+                               required>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> 
+                            Será visible para todos los participantes
+                        </small>
+                    </div>
+
+                    <!-- Fecha y Hora -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="start_date" class="form-label">
+                                <i class="fas fa-calendar text-success"></i> 
+                                <strong>Fecha</strong>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" 
+                                   class="form-control form-control-lg" 
+                                   id="start_date" 
+                                   name="start_date" 
+                                   required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="start_time" class="form-label">
+                                <i class="fas fa-clock text-warning"></i> 
+                                <strong>Hora</strong>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="time" 
+                                   class="form-control form-control-lg" 
+                                   id="start_time" 
+                                   name="start_time" 
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Duración -->
+                    <div class="mb-4">
+                        <label for="duration" class="form-label">
+                            <i class="fas fa-hourglass-half text-info"></i> 
+                            <strong>Duración (minutos)</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select form-select-lg" 
+                                id="duration" 
+                                name="duration" 
+                                required>
+                            <option value="">Selecciona la duración</option>
+                            <option value="15">15 minutos</option>
+                            <option value="30">30 minutos</option>
+                            <option value="40" selected>40 minutos (Límite gratis)</option>
+                            <option value="60">1 hora</option>
+                            <option value="90">1 hora 30 minutos</option>
+                            <option value="120">2 horas</option>
+                        </select>
+                        <small class="text-muted">
+                            <i class="fas fa-lightbulb"></i> 
+                            Cuentas gratuitas tienen límite de 40 minutos para 3+ participantes
+                        </small>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-4">
+                        <label for="agenda" class="form-label">
+                            <i class="fas fa-list-ul text-secondary"></i> 
+                            <strong>Agenda / Descripción</strong>
+                            <span class="badge bg-secondary ms-2">Opcional</span>
+                        </label>
+                        <textarea class="form-control" 
+                                  id="agenda" 
+                                  name="agenda" 
+                                  rows="4"
+                                  placeholder="Describe los temas a tratar en la reunión..."></textarea>
+                    </div>
+
+                    <!-- Seguridad -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5>
+                                <i class="fas fa-shield-alt text-danger"></i> 
+                                Configuración de Seguridad
+                            </h5>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="waiting_room" checked>
+                                <label class="form-check-label">Sala de espera (Recomendado)</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="join_before_host">
+                                <label class="form-check-label">Permitir entrada antes del anfitrión</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="mute_upon_entry" checked>
+                                <label class="form-check-label">Silenciar participantes al entrar</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-video"></i> Crear Reunión
+                        </button>
+                        <a href="{% url 'inicio' %}" class="btn btn-outline-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const date = document.getElementById('start_date');
+    const time = document.getElementById('start_time');
+
+    const today = new Date().toISOString().split('T')[0];
+    date.min = today;
+    date.value = today;
+
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    time.value = now.toTimeString().slice(0,5);
+});
+</script>
+{% endblock %}
