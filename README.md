@@ -1,3 +1,5 @@
+Las API Keys se mantienen en el código para facilitar la revisión inmediata de la funcionalidad, pero han sido restringidas a nivel de servidor para que solo operen bajo los dominios autorizados de esta práctica"
+
 # 📹 Zoom Meetings Manager - Django + Zoom API
 
 ## 📋 Descripción del Proyecto
